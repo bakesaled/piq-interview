@@ -11,6 +11,7 @@ import { categorySchema } from './schemas/category.schema';
 import { CategoryModel } from './models/category.model';
 import { categorySeed } from './seed/category.seed';
 import { Routes } from './routes';
+import { bookSeed } from './seed/book.seed';
 
 export class AppServer {
   public app: Application;
@@ -60,6 +61,7 @@ export class AppServer {
     );
 
     this.populateCategories();
+    this.populateBooks();
 
     Routes.create().init(this);
   }
@@ -67,17 +69,36 @@ export class AppServer {
   private populateCategories() {
     console.log('seeding categories');
     for (let i = 0; i < categorySeed.length; i++) {
-      const category: CategoryModel = categorySeed[i] as CategoryModel;
+      const category = categorySeed[i];
       this.model.category.findOne({ name: category.name }, (err, res) => {
         this.handleMongooseError(err);
         if (res) {
           this.model.category.update(
             { _id: res._id },
-            categorySeed[i],
+            category,
             this.handleMongooseError
           );
         } else {
-          this.model.category.create(categorySeed[i], this.handleMongooseError);
+          this.model.category.create(category, this.handleMongooseError);
+        }
+      });
+    }
+  }
+
+  private populateBooks() {
+    console.log('seeding books');
+    for (let i = 0; i < bookSeed.length; i++) {
+      const book: BookModel = bookSeed[i] as BookModel;
+      this.model.book.findOne({ name: book.name }, (err, res) => {
+        this.handleMongooseError(err);
+        if (res) {
+          this.model.book.update(
+            { _id: res._id },
+            book,
+            this.handleMongooseError
+          );
+        } else {
+          this.model.book.create(book, this.handleMongooseError);
         }
       });
     }

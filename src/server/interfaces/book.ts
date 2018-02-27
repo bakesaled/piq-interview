@@ -1,7 +1,7 @@
 export interface Book {
   name: string;
   author: string;
-  categoryId: string;
+  category: string;
   publishedDate: Date;
   user: string;
 }
