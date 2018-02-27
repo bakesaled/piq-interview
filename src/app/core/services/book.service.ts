@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Book } from '../../../server/interfaces/book';
 import { BookModel } from '../../../server/models/book.model';
+import { BookList } from '../../../server/interfaces/book-list';
 
 @Injectable()
 export class BookService {
   private readonly baseUrl = 'http://localhost:7000/api/';
   constructor(private http: HttpClient) {}
 
-  public get(): Observable<Array<Book>> {
-    return this.http.get<Array<Book>>(`${this.baseUrl}book/`);
+  public get(page: number, pageSize: number): Observable<BookList> {
+    return this.http.get<BookList>(`${this.baseUrl}book/search/${page}/${pageSize}`);
   }
 
   public getById(id: string): Observable<BookModel> {

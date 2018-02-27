@@ -18,25 +18,40 @@ export class BookRoute {
     this.server = server;
 
     return this.router
-      .get('/', (req: Request, res: Response) => {
-        // Return all books
+      .get('/search/:page/:pageSize', (req: Request, res: Response) => {
+        const pageSize = parseInt(req.params.pageSize, 10);
+        const page = parseInt(req.params.page, 10);
         this.server.model.book
-          .find({}, '')
+          .find({})
+          .skip(pageSize * page - pageSize)
+          .limit(pageSize)
           .populate('category')
           .exec((err: Error, books) => {
-            const booksResult: Array<Book> = [];
             if (err) {
               return res.status(500).send({ message: err.message });
             }
-            if (books) {
-              books.forEach(book => {
-                booksResult.push(book);
+            this.server.model.book
+              .count({})
+              .exec((error: Error, count: number) => {
+                const booksResult: Array<Book> = [];
+                if (err) {
+                  return res.status(500).send({ message: err.message });
+                }
+                if (books) {
+                  books.forEach(book => {
+                    booksResult.push(book);
+                  });
+                }
+                res.send({
+                  books: booksResult,
+                  current: page,
+                  pages: Math.ceil(count / pageSize),
+                  count: count
+                });
               });
-            }
-            res.send(booksResult);
           });
       })
-      .get('/:id', (req: Request, res: Response) => {
+      .get('single/:id', (req: Request, res: Response) => {
         this.server.model.book
           .findById(req.params.id)
           .populate('category')
