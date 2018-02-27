@@ -27,11 +27,11 @@ export class BookListDataSource implements DataSource<Book> {
     this.loadingSubject.complete();
   }
 
-  loadBooks(pageIndex = 0, pageSize = 3) {
+  loadBooks(page: number = 0, pageSize: number = 3, filter: string = '') {
     this.loadingSubject.next(true);
 
     this.bookService
-      .get(pageIndex, pageSize)
+      .get(page, pageSize, filter)
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))

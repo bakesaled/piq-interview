@@ -10,6 +10,8 @@ import { MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { BookListDataSource } from './book-list.data-source';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
 
 @Component({
   selector: 'ath-list',
@@ -18,6 +20,8 @@ import { BookListDataSource } from './book-list.data-source';
   encapsulation: ViewEncapsulation.None
 })
 export class ListComponent implements OnInit, AfterViewInit {
+  private filterSubject: Subject<string> = new Subject<string>();
+
   public dataSource: BookListDataSource;
 
   public displayedColumns = [
@@ -34,7 +38,15 @@ export class ListComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.dataSource = new BookListDataSource(this.bookService);
-    this.dataSource.loadBooks(1);
+    this.dataSource.loadBooks(0);
+
+    this.filterSubject.debounceTime(500).subscribe(value => {
+      this.dataSource.loadBooks(
+        this.paginator.pageIndex,
+        this.paginator.pageSize,
+        value
+      );
+    });
   }
 
   ngAfterViewInit() {
@@ -48,9 +60,13 @@ export class ListComponent implements OnInit, AfterViewInit {
 
   applyFilter(value: string) {
     console.log('filter', value);
+    this.filterSubject.next(value);
   }
 
   private loadBooksPage() {
-    this.dataSource.loadBooks(this.paginator.pageIndex, this.paginator.pageSize);
+    this.dataSource.loadBooks(
+      this.paginator.pageIndex,
+      this.paginator.pageSize
+    );
   }
 }

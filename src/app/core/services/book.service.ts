@@ -9,8 +9,14 @@ export class BookService {
   private readonly baseUrl = 'http://localhost:7000/api/';
   constructor(private http: HttpClient) {}
 
-  public get(page: number, pageSize: number): Observable<BookList> {
-    return this.http.get<BookList>(`${this.baseUrl}book/search/${page}/${pageSize}`);
+  public get(
+    page: number,
+    pageSize: number,
+    filter: string
+  ): Observable<BookList> {
+    return this.http.get<BookList>(
+      `${this.baseUrl}book/search/${page}/${pageSize}/${filter}`
+    );
   }
 
   public getById(id: string): Observable<BookModel> {
