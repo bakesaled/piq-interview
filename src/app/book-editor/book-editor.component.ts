@@ -12,6 +12,7 @@ import { MessageService } from '../core/services/message.service';
 import { ToolbarMessage } from '../core/messages/toolbar.message';
 import { Command } from '../core/enums/command.enum';
 import { BookEditorMessage } from '../core/messages/book-editor.message';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'ath-book-editor',
@@ -95,6 +96,12 @@ export class BookEditorComponent implements OnInit, OnDestroy {
     return this.categories.filter(
       category => category.name.toLowerCase().indexOf(name.toLowerCase()) === 0
     );
+  }
+
+  onOptionSelected(event: MatAutocompleteSelectedEvent) {
+    console.log('select', event);
+    this.bookForm.controls.category.setValue(event.option.value);
+    this.bookForm.controls.category.markAsDirty();
   }
 
   private saveForm() {

@@ -7,7 +7,7 @@
   </mat-form-field>
   <mat-form-field>
     <input matInput placeholder="category" formControlName="category" [matAutocomplete]="auto" [formControl]="categoryFormControl">
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelected($event)">
       <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
         {{ category.name }}
       </mat-option>
