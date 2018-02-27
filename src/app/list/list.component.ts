@@ -14,6 +14,10 @@ import { BookListDataSource } from './book-list.data-source';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import { Subscription } from 'rxjs/Subscription';
+import { BookEditorMessage } from '../core/messages/book-editor.message';
+import { Command } from '../core/enums/command.enum';
+import { ListMessage } from '../core/messages/list.message';
+import { MessageService } from '../core/services/message.service';
 
 @Component({
   selector: 'ath-list',
@@ -40,7 +44,8 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private bookService: BookService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -59,6 +64,10 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.push(
       this.route.data.subscribe(() => {
         this.dataSource.loadBooks(0);
+
+        this.messageService.publish(ListMessage, {
+          command: Command.navigate
+        });
       })
     );
   }

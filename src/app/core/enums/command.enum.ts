@@ -1,4 +1,5 @@
 export enum Command {
   none,
-  delete
+  delete,
+  navigate
 }

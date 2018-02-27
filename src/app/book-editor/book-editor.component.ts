@@ -11,6 +11,7 @@ import { map, startWith } from 'rxjs/operators';
 import { MessageService } from '../core/services/message.service';
 import { ToolbarMessage } from '../core/messages/toolbar.message';
 import { Command } from '../core/enums/command.enum';
+import { BookEditorMessage } from '../core/messages/book-editor.message';
 
 @Component({
   selector: 'ath-book-editor',
@@ -48,6 +49,10 @@ export class BookEditorComponent implements OnInit, OnDestroy {
           user: this.book.user
         });
         this.categoryFormControl = new FormControl(this.book.category);
+
+        this.messageService.publish(BookEditorMessage, {
+          command: Command.navigate
+        });
       })
     );
 

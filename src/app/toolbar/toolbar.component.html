@@ -2,5 +2,5 @@
   <a mat-button [routerLink]="['/']" class="ath-logo">Athenaeum</a>
   <span class="ath-spacer"></span>
   <a mat-button [routerLink]="'/book/0'"><mat-icon>add_circle</mat-icon></a>
-  <a mat-button (click)="onDelete()"><mat-icon>delete</mat-icon></a>
+  <a mat-button *ngIf="canDelete" (click)="onDelete()"><mat-icon>delete</mat-icon></a>
 </mat-toolbar>
