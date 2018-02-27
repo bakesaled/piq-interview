@@ -94,7 +94,9 @@ export class BookEditorComponent implements OnInit, OnDestroy {
           publishedDate: this.bookForm.value.publishedDate,
           user: this.bookForm.value.user
         })
-        .subscribe();
+        .subscribe((book: BookModel) => {
+          this.book._id = book._id;
+        });
     }
   }
 }

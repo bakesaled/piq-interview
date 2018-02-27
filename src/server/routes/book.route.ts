@@ -81,11 +81,12 @@ export class BookRoute {
             publishedData: req.body.publishedDate,
             user: req.body.user
           },
-          (err: Error, books: Book[]) => {
+          (err: Error, book: Book) => {
             if (err) {
               return res.status(500).send({ message: err.message });
             }
-            res.send(books[0]);
+            console.log('new done', book);
+            res.send(book);
           }
         );
       })
@@ -100,11 +101,12 @@ export class BookRoute {
             user: req.body.user
           },
           { multi: false },
-          (err: Error, books: Book[]) => {
+          (err: Error, book: Book) => {
             if (err) {
               return res.status(500).send({ message: err.message });
             }
-            res.send(books[0]);
+            console.log('update done', book);
+            res.send(book);
           }
         );
       });

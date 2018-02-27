@@ -15,7 +15,7 @@
   </ng-container>
   <ng-container matColumnDef="category">
     <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
-    <mat-cell *matCellDef="let book"> {{book.category.name}} </mat-cell>
+    <mat-cell *matCellDef="let book"> {{book.category?.name}} </mat-cell>
   </ng-container>
   <ng-container matColumnDef="publishedDate">
     <mat-header-cell *matHeaderCellDef> Published Date </mat-header-cell>

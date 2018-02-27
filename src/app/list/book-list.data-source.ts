@@ -27,7 +27,7 @@ export class BookListDataSource implements DataSource<Book> {
     this.loadingSubject.complete();
   }
 
-  loadBooks(page: number = 0, pageSize: number = 3, filter: string = '') {
+  loadBooks(page: number = 0, pageSize: number = 500, filter: string = '') {
     this.loadingSubject.next(true);
 
     this.bookService
