@@ -15,7 +15,8 @@ import { BookEditorMessage } from '../core/messages/book-editor.message';
 export class ToolbarComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
-  canDelete: false;
+  canDelete = false;
+  canArrowBack = false;
 
   constructor(private messageService: MessageService) {}
 
@@ -48,12 +49,14 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   private handleListMessage(msg: ListMessage) {
     if (msg.command === Command.navigate) {
       this.canDelete = false;
+      this.canArrowBack = false;
     }
   }
 
   private handleBookEditorMessage(msg: ListMessage) {
     if (msg.command === Command.navigate) {
       this.canDelete = true;
+      this.canArrowBack = true;
     }
   }
 }
