@@ -20,7 +20,6 @@ export class AppServer {
   constructor() {
     this.model = Object();
     this.app = express();
-    this.initRoot();
   }
 
   public static bootstrap(): AppServer {
@@ -34,6 +33,9 @@ export class AppServer {
     this.app.listen(DefaultConfig.port);
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(bodyParser.json());
+    this.initRoot();
+
+    this.initRoutes();
   }
 
   private initRoot() {
@@ -62,7 +64,9 @@ export class AppServer {
 
     this.populateCategories();
     this.populateBooks();
+  }
 
+  private initRoutes() {
     this.app.use((req, res, next) => {
       console.log('Processing ' + req.method + ' to ' + req.originalUrl);
       res.setHeader('Access-Control-Allow-Origin', '*');

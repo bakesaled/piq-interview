@@ -57,6 +57,12 @@ export class BookEditorComponent implements OnInit, OnDestroy {
         );
       })
     );
+
+    this.subscriptions.push(
+      this.bookForm.valueChanges
+        .debounceTime(500)
+        .subscribe(() => this.saveForm())
+    );
   }
 
   ngOnDestroy() {
@@ -66,7 +72,6 @@ export class BookEditorComponent implements OnInit, OnDestroy {
   }
 
   displayFn(category?: CategoryModel): string | undefined {
-    console.log('ddd', category);
     return category ? category.name : undefined;
   }
 
@@ -74,5 +79,22 @@ export class BookEditorComponent implements OnInit, OnDestroy {
     return this.categories.filter(
       category => category.name.toLowerCase().indexOf(name.toLowerCase()) === 0
     );
+  }
+
+  private saveForm() {
+    console.log('validating', this.bookForm.valid, this.bookForm.dirty);
+    if (this.bookForm.valid && this.bookForm.dirty) {
+      console.log('saving', this.book, this.bookForm.value);
+      this.bookService
+        .save({
+          _id: this.book._id,
+          name: this.bookForm.value.name,
+          author: this.bookForm.value.author,
+          category: this.bookForm.value.category,
+          publishedDate: this.bookForm.value.publishedDate,
+          user: this.bookForm.value.user
+        })
+        .subscribe();
+    }
   }
 }

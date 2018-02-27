@@ -88,6 +88,25 @@ export class BookRoute {
             res.send(books[0]);
           }
         );
+      })
+      .put('/update', (req: Request, res: Response) => {
+        this.server.model.book.update(
+          { _id: req.body._id },
+          {
+            name: req.body.name,
+            author: req.body.author,
+            category: req.body.category,
+            publishedData: req.body.publishedDate,
+            user: req.body.user
+          },
+          { multi: false },
+          (err: Error, books: Book[]) => {
+            if (err) {
+              return res.status(500).send({ message: err.message });
+            }
+            res.send(books[0]);
+          }
+        );
       });
   }
 }
