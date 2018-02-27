@@ -1,0 +1,24 @@
+<form [formGroup]="bookForm">
+  <mat-form-field>
+    <input matInput placeholder="name" formControlName="name">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="author" formControlName="author">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="category" formControlName="category" [matAutocomplete]="auto" [formControl]="categoryFormControl">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
+        {{ category.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="published date" [matDatepicker]="picker" formControlName="publishedDate">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="user" formControlName="user">
+  </mat-form-field>
+</form>
