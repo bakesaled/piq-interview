@@ -63,6 +63,20 @@ export class AppServer {
     this.populateCategories();
     this.populateBooks();
 
+    this.app.use((req, res, next) => {
+      console.log('Processing ' + req.method + ' to ' + req.originalUrl);
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader(
+        'Access-Control-Allow-Methods',
+        'POST, GET, PUT, DELETE, OPTIONS'
+      );
+      res.setHeader(
+        'Access-Control-Allow-Headers',
+        'origin, x-requested-with, content-type, Authorization'
+      );
+      next();
+    });
+
     Routes.create().init(this);
   }
 
