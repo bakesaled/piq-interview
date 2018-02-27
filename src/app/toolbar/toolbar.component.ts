@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessageService } from '../core/services/message.service';
+import { ToolbarMessage } from '../core/messages/toolbar.message';
+import { Command } from '../core/enums/command.enum';
 
 @Component({
   selector: 'ath-toolbar',
@@ -8,7 +11,13 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class ToolbarComponent implements OnInit {
-  constructor(router: Router) {}
+  constructor(private messageService: MessageService) {}
 
   ngOnInit() {}
+
+  onDelete() {
+    this.messageService.publish(ToolbarMessage, {
+      command: Command.delete
+    });
+  }
 }

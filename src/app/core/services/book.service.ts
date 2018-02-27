@@ -33,9 +33,20 @@ export class BookService {
 
   public save(book: Book | any) {
     if (book._id) {
-      return this.http.put(`${this.baseUrl}book/update`, book, this.httpOptions);
+      return this.http.put(
+        `${this.baseUrl}book/update`,
+        book,
+        this.httpOptions
+      );
     } else {
       return this.http.post(`${this.baseUrl}book/new`, book, this.httpOptions);
     }
+  }
+
+  public delete(id: string) {
+    return this.http.delete(
+      `${this.baseUrl}book/delete/${id}`,
+      this.httpOptions
+    );
   }
 }

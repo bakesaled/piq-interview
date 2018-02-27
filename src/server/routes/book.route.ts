@@ -85,7 +85,6 @@ export class BookRoute {
             if (err) {
               return res.status(500).send({ message: err.message });
             }
-            console.log('new done', book);
             res.send(book);
           }
         );
@@ -105,8 +104,18 @@ export class BookRoute {
             if (err) {
               return res.status(500).send({ message: err.message });
             }
-            console.log('update done', book);
             res.send(book);
+          }
+        );
+      })
+      .delete('/delete/:id', (req: Request, res: Response) => {
+        this.server.model.book.findOneAndRemove(
+          { _id: req.params.id },
+          (err: Error) => {
+            if (err) {
+              return res.status(500).send({ message: err.message });
+            }
+            return res.status(200).send(true);
           }
         );
       });
