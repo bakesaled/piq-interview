@@ -10,6 +10,7 @@ import { bookSchema } from './schemas/book.schema';
 import { categorySchema } from './schemas/category.schema';
 import { CategoryModel } from './models/category.model';
 import { categorySeed } from './seed/category.seed';
+import { Routes } from './routes';
 
 export class AppServer {
   public app: Application;
@@ -59,13 +60,15 @@ export class AppServer {
     );
 
     this.populateCategories();
+
+    Routes.create().init(this);
   }
 
   private populateCategories() {
     console.log('seeding categories');
     for (let i = 0; i < categorySeed.length; i++) {
       const category: CategoryModel = categorySeed[i] as CategoryModel;
-      this.model.category.findById(category._id, (err, res) => {
+      this.model.category.findOne({ name: category.name }, (err, res) => {
         this.handleMongooseError(err);
         if (res) {
           this.model.category.update(
