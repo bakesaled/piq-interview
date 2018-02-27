@@ -42,6 +42,7 @@ export class BookEditorComponent implements OnInit, OnDestroy {
           publishedDate: this.book.publishedDate,
           user: this.book.user
         });
+        this.categoryFormControl = new FormControl(this.book.category);
       })
     );
 

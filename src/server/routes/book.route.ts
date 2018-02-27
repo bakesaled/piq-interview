@@ -61,7 +61,7 @@ export class BookRoute {
             });
         }
       )
-      .get('single/:id', (req: Request, res: Response) => {
+      .get('/single/:id', (req: Request, res: Response) => {
         this.server.model.book
           .findById(req.params.id)
           .populate('category')

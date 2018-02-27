@@ -20,6 +20,6 @@ export class BookService {
   }
 
   public getById(id: string): Observable<BookModel> {
-    return this.http.get<BookModel>(`${this.baseUrl}book/${id}`);
+    return this.http.get<BookModel>(`${this.baseUrl}book/single/${id}`);
   }
 }
