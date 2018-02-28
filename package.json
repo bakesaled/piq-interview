@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "start:server": "nodemon --exec ts-node ./src/server/index.ts",
+    "start:all": "npm run start:server & npm start",
     "build": "ng build --prod",
     "test": "ng test",
     "test:server": "jasmine-ts \"./src/server/**/*.spec.ts\"",
