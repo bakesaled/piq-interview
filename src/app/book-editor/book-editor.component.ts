@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { BookService } from '../core/services/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookModel } from '../../server/models/book.model';
@@ -22,9 +22,12 @@ import { CheckoutDialogComponent } from '../checkout-dialog/checkout-dialog.comp
 @Component({
   selector: 'ath-book-editor',
   templateUrl: './book-editor.component.html',
-  styleUrls: ['./book-editor.component.scss']
+  styleUrls: ['./book-editor.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BookEditorComponent implements OnInit, OnDestroy {
+  @HostBinding('class.ath-book-editor') hostClass = true;
+
   private subscriptions: Subscription[] = [];
 
   book: BookModel;
