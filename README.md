@@ -4,16 +4,17 @@ This project consists of a list of books.  Books can be added, edited, or remove
 
 ## Development Run
 
-Run `npm run start:all` to run a Node server and an Angular client. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
+1. Run `npm install` to install all the depenedencies.
+2. Run `npm run start:all` to run a Node server and an Angular client. 
+3. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 #### Angular Client Only
 
-Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm start` to run the Amgular app only. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 #### Node Server Only
 
-Run `npm run start:server` for a Node server. Navigate to `http://localhost:7000`. The app will automatically reload if you change any of the source files.
+Run `npm run start:server` to run Node only. Navigate to `http://localhost:7000`. The app will automatically reload if you change any of the source files.
 
 ## Running unit tests
 
