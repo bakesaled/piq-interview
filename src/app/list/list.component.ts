@@ -14,7 +14,6 @@ import { BookListDataSource } from './book-list.data-source';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import { Subscription } from 'rxjs/Subscription';
-import { BookEditorMessage } from '../core/messages/book-editor.message';
 import { Command } from '../core/enums/command.enum';
 import { ListMessage } from '../core/messages/list.message';
 import { MessageService } from '../core/services/message.service';
@@ -53,6 +52,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscriptions.push(
       this.filterSubject.debounceTime(500).subscribe(value => {
+        this.paginator.pageIndex = 0;
         this.dataSource.loadBooks(
           this.paginator.pageIndex,
           this.paginator.pageSize,
@@ -63,7 +63,7 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscriptions.push(
       this.route.data.subscribe(() => {
-        this.dataSource.loadBooks(0);
+        this.loadBooksPage();
 
         this.messageService.publish(ListMessage, {
           command: Command.navigate
@@ -88,14 +88,13 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   applyFilter(value: string) {
-    console.log('filter', value);
     this.filterSubject.next(value);
   }
 
   private loadBooksPage() {
     this.dataSource.loadBooks(
-      this.paginator.pageIndex,
-      this.paginator.pageSize
+      this.paginator.pageIndex || 0,
+      this.paginator.pageSize || 10
     );
   }
 }

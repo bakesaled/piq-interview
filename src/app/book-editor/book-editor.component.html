@@ -1,3 +1,8 @@
+<div class="ath-progress-wrapper">
+  <div *ngIf="loading$ | async">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+</div>
 <form [formGroup]="bookForm">
   <mat-form-field>
     <input matInput placeholder="name" formControlName="name">
@@ -6,7 +11,8 @@
     <input matInput placeholder="author" formControlName="author">
   </mat-form-field>
   <mat-form-field>
-    <input matInput placeholder="category" formControlName="category" [matAutocomplete]="auto" [formControl]="categoryFormControl">
+    <input matInput placeholder="category" formControlName="category" [matAutocomplete]="auto"
+           [formControl]="categoryFormControl">
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelected($event)">
       <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
         {{ category.name }}
@@ -14,7 +20,8 @@
     </mat-autocomplete>
   </mat-form-field>
   <mat-form-field>
-    <input matInput placeholder="published date" [matDatepicker]="picker" formControlName="publishedDate" (dateInput)="onDateChange('input', $event)" (dateChange)="onDateChange('change', $event)">
+    <input matInput placeholder="published date" [matDatepicker]="picker" formControlName="publishedDate"
+           (dateChange)="onDateChange('change', $event)">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
@@ -24,6 +31,9 @@
   </div>
   <div *ngIf="!book.user || !book.user.length">
     <label>Available</label>
-    <button mat-button (click)="onCheckoutClick()"><mat-icon>check_circle</mat-icon>Checkout Now?</button>
+    <button mat-button (click)="onCheckoutClick()">
+      <mat-icon>check_circle</mat-icon>
+      Checkout Now?
+    </button>
   </div>
 </form>

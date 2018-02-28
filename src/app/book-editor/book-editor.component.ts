@@ -1,4 +1,10 @@
-import { Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  HostBinding,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
 import { BookService } from '../core/services/book.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookModel } from '../../server/models/book.model';
@@ -7,7 +13,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CategoryModel } from '../../server/models/category.model';
 import { CategoryService } from '../core/services/category.service';
 import { Observable } from 'rxjs/Observable';
-import { map, startWith } from 'rxjs/operators';
+import { catchError, finalize, map, startWith } from 'rxjs/operators';
 import { MessageService } from '../core/services/message.service';
 import { ToolbarMessage } from '../core/messages/toolbar.message';
 import { Command } from '../core/enums/command.enum';
@@ -18,6 +24,8 @@ import {
   MatDialog
 } from '@angular/material';
 import { CheckoutDialogComponent } from '../checkout-dialog/checkout-dialog.component';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { of } from 'rxjs/observable/of';
 
 @Component({
   selector: 'ath-book-editor',
@@ -29,6 +37,9 @@ export class BookEditorComponent implements OnInit, OnDestroy {
   @HostBinding('class.ath-book-editor') hostClass = true;
 
   private subscriptions: Subscription[] = [];
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+
+  public loading$ = this.loadingSubject.asObservable();
 
   book: BookModel;
   bookForm: FormGroup;
@@ -129,6 +140,7 @@ export class BookEditorComponent implements OnInit, OnDestroy {
   }
 
   private saveForm() {
+    this.loadingSubject.next(true);
     this.subscriptions.push(
       this.bookService
         .save({
@@ -139,6 +151,10 @@ export class BookEditorComponent implements OnInit, OnDestroy {
           publishedDate: this.bookForm.value.publishedDate,
           user: this.book.user
         })
+        .pipe(
+          catchError(() => of([])),
+          finalize(() => this.loadingSubject.next(false))
+        )
         .subscribe((book: BookModel) => {
           console.log('new book after save', book);
           if (book._id) {
@@ -150,11 +166,18 @@ export class BookEditorComponent implements OnInit, OnDestroy {
 
   private handleToolbarMessage(msg: ToolbarMessage) {
     if (msg.command === Command.delete) {
+      this.loadingSubject.next(true);
       this.subscriptions.push(
-        this.bookService.delete(this.book._id).subscribe(() => {
-          console.log('delete success');
-          this.router.navigate(['/']);
-        })
+        this.bookService
+          .delete(this.book._id)
+          .pipe(
+            catchError(() => of([])),
+            finalize(() => this.loadingSubject.next(false))
+          )
+          .subscribe(() => {
+            console.log('delete success');
+            this.router.navigate(['/']);
+          })
       );
     } else if (msg.command === Command.checkout) {
       this.checkout();

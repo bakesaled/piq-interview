@@ -9,7 +9,7 @@ import {
   MatIconModule,
   MatInputModule,
   MatNativeDateModule,
-  MatPaginatorModule, MatProgressSpinnerModule, MatSlideToggleModule,
+  MatPaginatorModule, MatProgressBarModule, MatProgressSpinnerModule, MatSlideToggleModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
@@ -31,6 +31,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatAutocompleteModule,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
+    MatProgressBarModule,
     FormsModule,
     ReactiveFormsModule
   ],
@@ -49,6 +50,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatAutocompleteModule,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
+    MatProgressBarModule,
     FormsModule,
     ReactiveFormsModule
   ]

@@ -41,6 +41,7 @@ export class BookRoute {
               }
               this.server.model.book
                 .count({})
+                .or(or)
                 .exec((error: Error, count: number) => {
                   const booksResult: Array<Book> = [];
                   if (err) {
