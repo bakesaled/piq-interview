@@ -60,7 +60,7 @@ export class BookEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.route.data.subscribe((data: { book: BookModel }) => {
-        this.book = data.book;
+        this.book = data.book || <any>{};
         this.bookForm = this.fb.group({
           name: this.book.name,
           author: this.book.author,
@@ -190,8 +190,10 @@ export class BookEditorComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.book.user = result;
-      this.saveForm();
+      if (result && result.length) {
+        this.book.user = result;
+        this.saveForm();
+      }
     });
   }
 }

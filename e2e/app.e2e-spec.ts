@@ -7,8 +7,8 @@ describe('athenaeum App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display icon', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to ath!');
+    expect(page.getParagraphText()).toEqual('book');
   });
 });
