@@ -12,7 +12,11 @@ import { MessageService } from '../core/services/message.service';
 import { ToolbarMessage } from '../core/messages/toolbar.message';
 import { Command } from '../core/enums/command.enum';
 import { BookEditorMessage } from '../core/messages/book-editor.message';
-import { MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
+import {
+  MatAutocompleteSelectedEvent,
+  MatDatepickerInputEvent,
+  MatDialog
+} from '@angular/material';
 import { CheckoutDialogComponent } from '../checkout-dialog/checkout-dialog.component';
 
 @Component({
@@ -101,13 +105,18 @@ export class BookEditorComponent implements OnInit, OnDestroy {
   }
 
   onOptionSelected(event: MatAutocompleteSelectedEvent) {
-    console.log('select', event);
     this.bookForm.controls.category.setValue(event.option.value);
     this.bookForm.controls.category.markAsDirty();
   }
 
   onCheckoutClick() {
     this.checkout();
+  }
+
+  onDateChange(type: string, event: MatDatepickerInputEvent<Date>) {
+    console.log('date', event);
+    this.bookForm.controls.publishedDate.setValue(event.value);
+    this.bookForm.controls.publishedDate.markAsDirty();
   }
 
   private validateAndSaveForm() {
@@ -128,7 +137,10 @@ export class BookEditorComponent implements OnInit, OnDestroy {
           user: this.book.user
         })
         .subscribe((book: BookModel) => {
-          this.book._id = book._id;
+          console.log('new book after save', book);
+          if (book._id) {
+            this.book._id = book._id;
+          }
         })
     );
   }

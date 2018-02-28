@@ -2,7 +2,7 @@
   <a mat-icon-button *ngIf="canArrowBack" [routerLink]="'/'"><mat-icon>arrow_back</mat-icon></a>
   <a mat-button [routerLink]="['/']"><mat-icon class="ath-logo">book</mat-icon>Athenaeum</a>
   <span class="ath-spacer"></span>
-  <a mat-button [routerLink]="'/book/0'"><mat-icon>add_circle</mat-icon></a>
+  <a mat-button *ngIf="canCreate" [routerLink]="'/book/0'"><mat-icon>add_circle</mat-icon></a>
   <a mat-button *ngIf="canCheckout" (click)="onCheckoutClick()"><mat-icon>check_circle</mat-icon></a>
   <a mat-button *ngIf="canDelete" (click)="onDelete()"><mat-icon>delete</mat-icon></a>
 </mat-toolbar>

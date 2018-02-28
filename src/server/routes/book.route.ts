@@ -78,7 +78,7 @@ export class BookRoute {
             name: req.body.name,
             author: req.body.author,
             category: req.body.category,
-            publishedData: req.body.publishedDate,
+            publishedDate: req.body.publishedDate,
             user: req.body.user
           },
           (err: Error, book: Book) => {
@@ -90,13 +90,14 @@ export class BookRoute {
         );
       })
       .put('/update', (req: Request, res: Response) => {
+        console.log('update', req.body);
         this.server.model.book.update(
           { _id: req.body._id },
           {
             name: req.body.name,
             author: req.body.author,
             category: req.body.category,
-            publishedData: req.body.publishedDate,
+            publishedDate: req.body.publishedDate,
             user: req.body.user
           },
           { multi: false },
