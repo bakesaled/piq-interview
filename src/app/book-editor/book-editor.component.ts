@@ -12,7 +12,8 @@ import { MessageService } from '../core/services/message.service';
 import { ToolbarMessage } from '../core/messages/toolbar.message';
 import { Command } from '../core/enums/command.enum';
 import { BookEditorMessage } from '../core/messages/book-editor.message';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
+import { CheckoutDialogComponent } from '../checkout-dialog/checkout-dialog.component';
 
 @Component({
   selector: 'ath-book-editor',
@@ -34,7 +35,8 @@ export class BookEditorComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -72,7 +74,7 @@ export class BookEditorComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.bookForm.valueChanges
         .debounceTime(500)
-        .subscribe(() => this.saveForm())
+        .subscribe(() => this.validateAndSaveForm())
     );
 
     this.subscriptions.push(
@@ -104,25 +106,31 @@ export class BookEditorComponent implements OnInit, OnDestroy {
     this.bookForm.controls.category.markAsDirty();
   }
 
-  private saveForm() {
-    console.log('validating', this.bookForm.valid, this.bookForm.dirty);
+  onCheckoutClick() {
+    this.checkout();
+  }
+
+  private validateAndSaveForm() {
     if (this.bookForm.valid && this.bookForm.dirty) {
-      console.log('saving', this.book, this.bookForm.value);
-      this.subscriptions.push(
-        this.bookService
-          .save({
-            _id: this.book._id,
-            name: this.bookForm.value.name,
-            author: this.bookForm.value.author,
-            category: this.bookForm.value.category,
-            publishedDate: this.bookForm.value.publishedDate,
-            user: this.bookForm.value.user
-          })
-          .subscribe((book: BookModel) => {
-            this.book._id = book._id;
-          })
-      );
+      this.saveForm();
     }
+  }
+
+  private saveForm() {
+    this.subscriptions.push(
+      this.bookService
+        .save({
+          _id: this.book._id,
+          name: this.bookForm.value.name,
+          author: this.bookForm.value.author,
+          category: this.bookForm.value.category,
+          publishedDate: this.bookForm.value.publishedDate,
+          user: this.book.user
+        })
+        .subscribe((book: BookModel) => {
+          this.book._id = book._id;
+        })
+    );
   }
 
   private handleToolbarMessage(msg: ToolbarMessage) {
@@ -133,6 +141,22 @@ export class BookEditorComponent implements OnInit, OnDestroy {
           this.router.navigate(['/']);
         })
       );
+    } else if (msg.command === Command.checkout) {
+      this.checkout();
     }
+  }
+
+  private checkout() {
+    const dialogRef = this.dialog.open(CheckoutDialogComponent, {
+      width: '400px',
+      height: '250px',
+      data: this.bookForm.value
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      this.book.user = result;
+      this.saveForm();
+    });
   }
 }

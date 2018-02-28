@@ -6,24 +6,27 @@
 </mat-form-field>
 <mat-table [dataSource]="dataSource">
   <ng-container matColumnDef="name">
-    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-    <mat-cell *matCellDef="let book"> {{book.name}} </mat-cell>
+    <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+    <mat-cell *matCellDef="let book"> {{book.name}}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="author">
-    <mat-header-cell *matHeaderCellDef> Author </mat-header-cell>
-    <mat-cell *matCellDef="let book"> {{book.author}} </mat-cell>
+    <mat-header-cell *matHeaderCellDef> Author</mat-header-cell>
+    <mat-cell *matCellDef="let book"> {{book.author}}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="category">
-    <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
-    <mat-cell *matCellDef="let book"> {{book.category?.name}} </mat-cell>
+    <mat-header-cell *matHeaderCellDef> Category</mat-header-cell>
+    <mat-cell *matCellDef="let book"> {{book.category?.name}}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="publishedDate">
-    <mat-header-cell *matHeaderCellDef> Published Date </mat-header-cell>
-    <mat-cell *matCellDef="let book"> {{book.publishedDate | date:'longDate' }} </mat-cell>
+    <mat-header-cell *matHeaderCellDef> Published Date</mat-header-cell>
+    <mat-cell *matCellDef="let book"> {{book.publishedDate | date:'longDate' }}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="user">
-    <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
-    <mat-cell *matCellDef="let book"> {{book.user}} </mat-cell>
+    <mat-header-cell *matHeaderCellDef> Borrowed By</mat-header-cell>
+    <mat-cell *matCellDef="let book">
+      <ng-container *ngIf="!book.user || !book.user.length">[Available]</ng-container>
+      <ng-container *ngIf="book.user && book.user.length">{{book.user}}</ng-container>
+    </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></mat-row>

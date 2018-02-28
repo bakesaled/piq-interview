@@ -18,7 +18,12 @@
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
-  <mat-form-field>
-    <input matInput placeholder="user" formControlName="user">
-  </mat-form-field>
+  <div *ngIf="book.user && book.user.length">
+    <label>Borrowed By</label>
+    <div>{{book.user}}</div>
+  </div>
+  <div *ngIf="!book.user || !book.user.length">
+    <label>Available</label>
+    <button mat-button (click)="onCheckoutClick()"><mat-icon>check_circle</mat-icon>Checkout Now?</button>
+  </div>
 </form>

@@ -12,6 +12,7 @@ import { LandingComponent } from './landing/landing.component';
 import { BookEditorComponent } from './book-editor/book-editor.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
+import { CheckoutDialogComponent } from './checkout-dialog/checkout-dialog.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { RouterModule } from '@angular/router';
     ListComponent,
     ToolbarComponent,
     LandingComponent,
-    BookEditorComponent
+    BookEditorComponent,
+    CheckoutDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +31,9 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     AppRoutingModule,
     RouterModule
+  ],
+  entryComponents: [
+    CheckoutDialogComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

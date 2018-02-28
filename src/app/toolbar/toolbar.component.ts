@@ -16,6 +16,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   canDelete = false;
+  canCheckout = false;
   canArrowBack = false;
 
   constructor(private messageService: MessageService) {}
@@ -46,9 +47,16 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  onCheckoutClick() {
+    this.messageService.publish(ToolbarMessage, {
+      command: Command.checkout
+    });
+  }
+
   private handleListMessage(msg: ListMessage) {
     if (msg.command === Command.navigate) {
       this.canDelete = false;
+      this.canCheckout = false;
       this.canArrowBack = false;
     }
   }
@@ -56,6 +64,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   private handleBookEditorMessage(msg: ListMessage) {
     if (msg.command === Command.navigate) {
       this.canDelete = true;
+      this.canCheckout = true;
       this.canArrowBack = true;
     }
   }
