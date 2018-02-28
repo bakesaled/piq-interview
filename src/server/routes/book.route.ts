@@ -91,7 +91,6 @@ export class BookRoute {
         );
       })
       .put('/update', (req: Request, res: Response) => {
-        console.log('update', req.body);
         this.server.model.book.update(
           { _id: req.body._id },
           {

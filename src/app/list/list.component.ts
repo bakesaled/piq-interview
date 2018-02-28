@@ -83,7 +83,6 @@ export class ListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onRowClick(row) {
-    console.log('click', row);
     this.router.navigate([`/book/${row._id}`]);
   }
 

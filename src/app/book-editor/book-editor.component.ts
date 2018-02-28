@@ -60,7 +60,6 @@ export class BookEditorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.push(
       this.route.data.subscribe((data: { book: BookModel }) => {
-        console.log('book', data);
         this.book = data.book;
         this.bookForm = this.fb.group({
           name: this.book.name,
@@ -71,9 +70,11 @@ export class BookEditorComponent implements OnInit, OnDestroy {
         });
         this.categoryFormControl = new FormControl(this.book.category);
 
-        this.messageService.publish(BookEditorMessage, {
-          command: Command.navigate
-        });
+        if (!this.book.user || !this.book.user.length) {
+          this.messageService.publish(BookEditorMessage, {
+            command: Command.navigate
+          });
+        }
       })
     );
 
@@ -128,7 +129,6 @@ export class BookEditorComponent implements OnInit, OnDestroy {
   }
 
   onDateChange(type: string, event: MatDatepickerInputEvent<Date>) {
-    console.log('date', event);
     this.bookForm.controls.publishedDate.setValue(event.value);
     this.bookForm.controls.publishedDate.markAsDirty();
   }
@@ -156,7 +156,6 @@ export class BookEditorComponent implements OnInit, OnDestroy {
           finalize(() => this.loadingSubject.next(false))
         )
         .subscribe((book: BookModel) => {
-          console.log('new book after save', book);
           if (book._id) {
             this.book._id = book._id;
           }
@@ -175,7 +174,6 @@ export class BookEditorComponent implements OnInit, OnDestroy {
             finalize(() => this.loadingSubject.next(false))
           )
           .subscribe(() => {
-            console.log('delete success');
             this.router.navigate(['/']);
           })
       );
@@ -192,7 +190,6 @@ export class BookEditorComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
       this.book.user = result;
       this.saveForm();
     });

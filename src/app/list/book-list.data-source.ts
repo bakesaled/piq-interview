@@ -37,7 +37,6 @@ export class BookListDataSource implements DataSource<Book> {
         finalize(() => this.loadingSubject.next(false))
       )
       .subscribe((bookList: BookList) => {
-        console.log(bookList);
         this.booksSubject.next(bookList.books);
         this.countSubject.next(bookList.count);
       });
